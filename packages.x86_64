@@ -5,6 +5,7 @@
 # Base
 base
 linux
+linux-headers
 linux-firmware
 intel-ucode
 amd-ucode

@@ -8,8 +8,7 @@ ln -sf /usr/share/zoneinfo/UTC /etc/localtime
 # Enable Networking
 systemctl enable NetworkManager
 
-# Enable Gaming Services
-systemctl enable gamemoded
+# Note: gamemode is activated on-demand when games request it, not as a persistent service
 
 # --- AI Integration: OpenClaw / Moltbot ---
 echo "Installing OpenClaw Agent..."
