@@ -4,8 +4,7 @@
 # -----------------------------------------------------------------------------
 # Base
 base
-linux-zen
-linux-zen-headers
+linux
 linux-firmware
 intel-ucode
 amd-ucode
@@ -36,8 +35,6 @@ lib32-gamemode
 mangohud
 lib32-mangohud
 gamescope
-vkbasalt
-proton-ge-custom-bin
 
 # Drivers
 mesa
@@ -76,8 +73,5 @@ firefox
 # -----------------------------------------------------------------------------
 nodejs
 npm
-pnpm
 python
 python-pip
-ollama
-code
