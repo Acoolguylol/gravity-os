@@ -20,7 +20,7 @@ wget
 zsh
 neovim
 htop
-neofetch
+fastfetch
 
 # -----------------------------------------------------------------------------
 # GAMING OPTIMIZATIONS
