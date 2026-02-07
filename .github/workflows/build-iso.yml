@@ -15,6 +15,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Initialize Pacman Keys
+      run: |
+        pacman-key --init
+        pacman-key --populate archlinux
+
     - name: Install Dependencies
       run: |
         pacman -Syu --noconfirm archiso git make base-devel
