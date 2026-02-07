@@ -1,41 +1,53 @@
 #!/bin/bash
 set -e
 
-# --- Configuration ---
-PROFILE_NAME="gravity-os"
-WORK_DIR="./work"
-OUT_DIR="./out"
+# GravityOS Build Script
+# Strategy: Use the official 'releng' profile as a base (to get working bootloaders)
+# and overlay our custom packages and configs on top.
 
-# --- Install Dependencies (For build machine) ---
-# IMPORTANT: This script requires 'archiso' tool!
-if ! command -v mkarchiso &> /dev/null; then
-  echo "Error: mkarchiso not found. You must run this on Arch Linux with 'archiso' package installed."
-  echo "Try: sudo pacman -S archiso"
-  exit 1
+# Paths
+SOURCE_PROFILE="/usr/share/archiso/configs/releng"
+WORK_PROFILE="/tmp/gravity-profile"
+CURRENT_DIR="$(pwd)"
+OUT_DIR="${CURRENT_DIR}/out"
+
+# Check permissions
+if [ "$EUID" -ne 0 ]; then
+   echo "This script must be run as root."
+   exit 1
 fi
 
-echo "Building GravityOS ISO..."
+echo "--- 🚀 Preparing GravityOS Profile ---"
 
-# --- 1. Clone & Setup OpenClaw ---
-echo "Cloning OpenClaw into ISO build root..."
-mkdir -p airootfs/opt/GravityOS/Agents
-if [ ! -d "airootfs/opt/GravityOS/Agents/OpenClaw" ]; then
-    git clone https://github.com/OpenClaw/OpenClaw.git airootfs/opt/GravityOS/Agents/OpenClaw
-    # Install dependencies locally?
-    # This part is tricky. 'node_modules' are huge and platform specific.
-    # It's better to install them during 'customize_airootfs.sh' if networking allows,
-    # OR create a dedicated pacman package.
-    # We will assume user handles this manually for now or adds a first-boot script.
-else
-    echo "OpenClaw already present."
-fi
+# 1. Prepare Workspace
+rm -rf "$WORK_PROFILE"
+mkdir -p "$WORK_PROFILE"
+mkdir -p "$OUT_DIR"
 
-# --- 2. Copy Profile Configs ---
-# 'archiso' expects specific structure, so we point it to current dir
-if [ "$EUID" -eq 0 ]; then
-    mkarchiso -v -w "$WORK_DIR" -o "$OUT_DIR" .
-else
-    sudo mkarchiso -v -w "$WORK_DIR" -o "$OUT_DIR" .
-fi
+# 2. Copy Base Profile (releng)
+# This ensures we have all the syslinux/GRUB/systemd-boot binaries and configs
+echo "-> Copying base 'releng' profile..."
+cp -a "$SOURCE_PROFILE/." "$WORK_PROFILE/"
 
-echo "Build Complete! ISO is in $OUT_DIR"
+# 3. Apply Customizations (Overlay)
+echo "-> Applying GravityOS configs..."
+
+# Merge Packages: Append our packages to the default list
+# We filter out empty lines and comments from our file just in case
+grep -vE '^\s*#|^\s*$' packages.x86_64 >> "$WORK_PROFILE/packages.x86_64"
+
+# Overwrite Configurations
+cp pacman.conf "$WORK_PROFILE/pacman.conf"
+cp profiledef.sh "$WORK_PROFILE/profiledef.sh"
+
+# Overlay airootfs (Filesystem)
+# We use cp -rT to merge contents into existing directories
+cp -r airootfs/* "$WORK_PROFILE/airootfs/"
+
+# 4. Build ISO
+echo "--- 🔨 Building ISO (This may take a while) ---"
+cd "$WORK_PROFILE"
+mkarchiso -v -w ./work -o "$OUT_DIR" .
+
+echo "--- ✅ Build Complete! ---"
+echo "ISO is located in: $OUT_DIR"
