@@ -18,5 +18,4 @@ file_permissions=(
   ["/etc/shadow"]="0:0:400"
   ["/root"]="0:0:750"
   ["/root/customize_airootfs.sh"]="0:0:755"
-  ["/opt/GravityOS/Agents/OpenClaw/.env"]="0:0:600"
 )
