@@ -1,0 +1,83 @@
+
+# -----------------------------------------------------------------------------
+# GRAVITY OS - CORE & GAMING
+# -----------------------------------------------------------------------------
+# Base
+base
+linux-zen
+linux-zen-headers
+linux-firmware
+intel-ucode
+amd-ucode
+
+# Networking
+networkmanager
+dhcpcd
+
+# Essential CLI Tools
+git
+curl
+wget
+zsh
+neovim
+htop
+neofetch
+
+# -----------------------------------------------------------------------------
+# GAMING OPTIMIZATIONS
+# -----------------------------------------------------------------------------
+steam
+lutris
+wine
+wine-staging
+winetricks
+gamemode
+lib32-gamemode
+mangohud
+lib32-mangohud
+gamescope
+vkbasalt
+proton-ge-custom-bin
+
+# Drivers
+mesa
+lib32-mesa
+vulkan-radeon
+lib32-vulkan-radeon
+nvidia-dkms
+nvidia-utils
+lib32-nvidia-utils
+
+
+# -----------------------------------------------------------------------------
+# VIBE CODING & AESTHETICS (Hyprland + Waybar + Kitty)
+# -----------------------------------------------------------------------------
+hyprland
+xdg-desktop-portal-hyprland
+waybar
+kitty
+rofi
+dunst
+polkit-kde-agent
+thunar
+tumbler
+ffmpegthumbnailer
+papirus-icon-theme
+ttf-jetbrains-mono-nerd
+ttf-font-awesome
+pipewire
+pipewire-pulse
+pamixer
+pavucontrol
+firefox
+
+# -----------------------------------------------------------------------------
+# AI AGENT & CODING
+# -----------------------------------------------------------------------------
+nodejs
+npm
+pnpm
+python
+python-pip
+ollama
+code

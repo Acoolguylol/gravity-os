@@ -1,0 +1,11 @@
+[Unit]
+Description=Gravity First Boot Setup
+
+[Service]
+ExecStart=/usr/local/bin/first_boot_setup.sh
+Type=oneshot
+User=root
+RemainAfterExit=yes
+
+[Install]
+WantedBy=network-online.target
